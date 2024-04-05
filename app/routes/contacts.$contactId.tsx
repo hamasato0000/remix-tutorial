@@ -6,8 +6,9 @@ export default function Contact() {
   const contact = {
     first: "Your",
     last: "Name",
-    avatar: "https://placekitten.com/g/200/200",
-    twitter: "your_handle",
+    avatar:
+      "https://pbs.twimg.com/profile_images/1010863255429017600/87YWzREw_400x400.jpg",
+    twitter: "@hamasato0000",
     notes: "Some notes",
     favarite: true,
   };
