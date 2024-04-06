@@ -27,7 +27,9 @@ export const loader = async () => {
 };
 
 export default function App() {
-  const { contacts } = useLoaderData();
+  // ルートに対応するloader関数で得たデータにアクセス
+  // useLoaderDataで得られるデータの型はloader関数の戻り値の型であるとアノテーション
+  const { contacts } = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
