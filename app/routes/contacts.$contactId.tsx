@@ -1,9 +1,19 @@
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { Form, json, useLoaderData } from "@remix-run/react";
 import { FunctionComponent } from "react";
 import { ContactRecord, getContact } from "~/data";
+import invariant from "tiny-invariant";
 
-export const loader = async ({ params }) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  // ファイル名とパラメータが一致しない可能性を考慮
+  invariant(params.contactId, "Missing contactId param");
   const contact = await getContact(params.contactId);
+
+  // コンタクトが見つからなかったときを考慮
+  // 以降のコンポーネントコードではコンタクトが存在しない場合を考慮しなくて良い
+  if (!contact) {
+    throw new Response("Not Found", { status: 404 });
+  }
   return json({ contact });
 };
 
