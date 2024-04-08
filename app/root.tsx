@@ -14,7 +14,7 @@ import {
 
 // スタイルシートのURLを取得
 import appStylesHref from "./app.css?url";
-import { getContacts } from "./data";
+import { createEmptyContact, getContacts } from "./data";
 
 // スタイルシートの読み込み
 export const links: LinksFunction = () => [
@@ -24,6 +24,11 @@ export const links: LinksFunction = () => [
 export const loader = async () => {
   const contacts = await getContacts();
   return json({ contacts });
+};
+
+export const action = async () => {
+  const contact = await createEmptyContact();
+  return json({ contact });
 };
 
 export default function App() {
@@ -54,6 +59,8 @@ export default function App() {
               />
               <div id="search-spinner" aria-hidden hidden={true} />
             </Form>
+            {/* フォームはブラウザがリクエストをサーバーに送るのを防ぐ */}
+            {/* 代わりにfetchを使いルートのアクション関数にリクエストを送る */}
             <Form method="post">
               <button type="submit">New</button>
             </Form>
