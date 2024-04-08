@@ -66,7 +66,7 @@ export default function App() {
                     <Link to={`/contacts/${contact.id}`}>
                       {contact.first || contact.last ? (
                         <>
-                          {contact.fisrt} {contact.last}
+                          {contact.first} {contact.last}
                         </>
                       ) : (
                         <i>No Name</i>
