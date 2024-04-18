@@ -12,6 +12,7 @@ import {
   json,
   redirect,
   useLoaderData,
+  useNavigation,
 } from "@remix-run/react";
 
 // スタイルシートのURLを取得
@@ -37,6 +38,7 @@ export default function App() {
   // ルートに対応するloader関数で得たデータにアクセス
   // useLoaderDataで得られるデータの型はloader関数の戻り値の型であるとアノテーション
   const { contacts } = useLoaderData<typeof loader>();
+  const navigation = useNavigation();
 
   return (
     <html lang="en">
@@ -97,7 +99,10 @@ export default function App() {
             )}
           </nav>
         </div>
-        <div id="detail">
+        <div
+          className={navigation.state === "loading" ? "loading" : ""}
+          id="detail"
+        >
           <Outlet />
         </div>
         <ScrollRestoration />
