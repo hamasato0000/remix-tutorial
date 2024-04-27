@@ -18,7 +18,7 @@ import {
 // スタイルシートのURLを取得
 import appStylesHref from "./app.css?url";
 import { createEmptyContact, getContacts } from "./data";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // スタイルシートの読み込み
 export const links: LinksFunction = () => [
@@ -42,15 +42,10 @@ export default function App() {
   // useLoaderDataで得られるデータの型はloader関数の戻り値の型であるとアノテーション
   const { contacts, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
+  const [query, setQuery] = useState(q || "");
 
   useEffect(() => {
-    // 検索フォーム要素を取得
-    const searchField = document.getElementById("q");
-
-    // 要素が入力要素だった場合、その値にクエリパラメータの値をセットする
-    if (searchField instanceof HTMLInputElement) {
-      searchField.value = q || "";
-    }
+    setQuery(q || "");
   }, [q]);
 
   return (
@@ -69,11 +64,12 @@ export default function App() {
             <Form id="search-form" role="search">
               <input
                 id="q"
-                defaultValue={q || ""}
+                onChange={(event) => setQuery(event.currentTarget.value)}
                 aria-label="Search contacts"
                 placeholder="Search"
                 type="search"
                 name="q"
+                value={query}
               />
               <div id="search-spinner" aria-hidden hidden={true} />
             </Form>
