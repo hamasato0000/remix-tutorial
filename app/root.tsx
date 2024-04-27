@@ -18,6 +18,7 @@ import {
 // スタイルシートのURLを取得
 import appStylesHref from "./app.css?url";
 import { createEmptyContact, getContacts } from "./data";
+import { useEffect } from "react";
 
 // スタイルシートの読み込み
 export const links: LinksFunction = () => [
@@ -41,6 +42,16 @@ export default function App() {
   // useLoaderDataで得られるデータの型はloader関数の戻り値の型であるとアノテーション
   const { contacts, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    // 検索フォーム要素を取得
+    const searchField = document.getElementById("q");
+
+    // 要素が入力要素だった場合、その値にクエリパラメータの値をセットする
+    if (searchField instanceof HTMLInputElement) {
+      searchField.value = q || "";
+    }
+  }, [q]);
 
   return (
     <html lang="en">
