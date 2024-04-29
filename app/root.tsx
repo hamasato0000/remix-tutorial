@@ -46,6 +46,12 @@ export default function App() {
   const [query, setQuery] = useState(q || "");
   const submit = useSubmit();
 
+  // 現在のロケーションについて、URLのクエリ文字列にqが存在するかを判定
+  // 現在検索中かどうかの判定に使う
+  const searching =
+    navigation.location && // 現在のナビゲーションのロケーション情報を取得（現在のページのURLの情報）
+    new URLSearchParams(navigation.location.search).has("q"); // URLのクエリ文字列を解析するクラス
+
   useEffect(() => {
     setQuery(q || "");
   }, [q]);
@@ -70,6 +76,7 @@ export default function App() {
             >
               <input
                 id="q"
+                className={searching ? "loading" : ""}
                 onChange={(event) => setQuery(event.currentTarget.value)}
                 aria-label="Search contacts"
                 placeholder="Search"
@@ -77,7 +84,7 @@ export default function App() {
                 name="q"
                 value={query}
               />
-              <div id="search-spinner" aria-hidden hidden={true} />
+              <div id="search-spinner" aria-hidden hidden={!searching} />
             </Form>
             {/* フォームはブラウザがリクエストをサーバーに送るのを防ぐ */}
             {/* 代わりにfetchを使いルートのアクション関数にリクエストを送る */}
@@ -116,7 +123,10 @@ export default function App() {
           </nav>
         </div>
         <div
-          className={navigation.state === "loading" ? "loading" : ""}
+          // 検索時は画面がフェードアウトしないようにする
+          className={
+            navigation.state === "loading" && !searching ? "loading" : ""
+          }
           id="detail"
         >
           <Outlet />
