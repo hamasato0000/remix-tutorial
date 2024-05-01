@@ -84,7 +84,12 @@ const Favorite: FunctionComponent<{
   contact: Pick<ContactRecord, "favorite">;
 }> = ({ contact }) => {
   const fetcher = useFetcher();
-  const favorite = contact.favorite;
+
+  // Optimistic UIの実現
+  // フォームの値で先にUIを更新してしまう
+  const favorite = fetcher.formData
+    ? fetcher.formData.get("favarite") === "true"
+    : contact.favorite;
 
   return (
     <fetcher.Form method="post">
